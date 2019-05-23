@@ -71,11 +71,12 @@ namespace BooksAPITest
             {
                 Console.WriteLine("Book name: \t{0}", book.VolumeInfo.Title);
                 Console.WriteLine("Book ID: \t{0}", book.Id);
+                Console.WriteLine("Authors:");
                 foreach (var author in book.VolumeInfo.Authors)
                 {
                     Console.WriteLine("\tAuthor: \t{0}", author);
                 }
-                Console.WriteLine("{0}", book.AccessInfo.Embeddable);
+                Console.WriteLine("Embeddable: \t{0}\n", book.AccessInfo.Embeddable);
             }
             Console.WriteLine("------------------------------------------------------------------------");
         }
