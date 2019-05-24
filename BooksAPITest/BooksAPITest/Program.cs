@@ -6,15 +6,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+using BooksAPILibrary;
+
 namespace BooksAPITest
 {
     class Program
     {
+        //private readonly string configFile = "C:/Users/owena/git/BooksAPITest/BooksAPITest/BooksAPITest/config.txt";
+
         private static void Main(string[] args)
         {
             try
             {
-                new BookSearch().CreateServiceObject().Wait();
+                new BookSearch().CreateServiceObject("C:/Users/owena/git/BooksAPITest/BooksAPITest/BooksAPITest/config.txt").Wait();
+                new BooksAPIService().CreateServiceObject("C:/Users/owena/git/BooksAPITest/BooksAPITest/BooksAPITest/config.txt").Wait();
                 TestApi();
             }
             catch (AggregateException ex)
@@ -30,9 +35,9 @@ namespace BooksAPITest
         {
             string isbn = "0071807993";
             string userId = "105479000489381502269";
-            string shelfId = "1002";
+            string shelfId = "0";
 
-            Console.WriteLine(BookSearch.service.ApplicationName);
+            Console.WriteLine(BooksAPIService.service.ApplicationName);
 
             Console.WriteLine("\n------------------------------------------------------------------------");
 
@@ -53,18 +58,20 @@ namespace BooksAPITest
             Console.WriteLine("Access: \t {0}", rest.Access);
             Console.WriteLine("------------------------------------------------------------------------\n");
 
-            var shelves = BookSearch.ListAllMyShelves(userId);
+            //var shelves = BookSearch.ListAllMyShelves(userId);
+            var shelves = BooksAPIService.ListAllMyShelves(userId);
             var s = shelves.Result.Items;
             Console.WriteLine("------------------------------------------------------------------------");
             foreach (var bookshelf in s)
             {
                 Console.WriteLine("Shelf name: \t{0}", bookshelf.Title);
                 Console.WriteLine("Access type: \t{0}", bookshelf.Access);
-                Console.WriteLine("Shelf ID: \t{0}\n", bookshelf.Id);
+                Console.WriteLine("Shelf ID: \t{0}", bookshelf.Id);
             }
             Console.WriteLine("------------------------------------------------------------------------\n");
 
-            var booksOnShelf = BookSearch.ListVolumesOnShelf(shelfId);
+            //var booksOnShelf = BookSearch.ListVolumesOnShelf(shelfId);
+            var booksOnShelf = BooksAPIService.ListVolumesOnShelf(shelfId);
             var books = booksOnShelf.Result.Items;
             Console.WriteLine("------------------------------------------------------------------------");
             foreach (var book in books)
@@ -76,7 +83,7 @@ namespace BooksAPITest
                 {
                     Console.WriteLine("\tAuthor: \t{0}", author);
                 }
-                Console.WriteLine("Embeddable: \t{0}\n", book.AccessInfo.Embeddable);
+                Console.WriteLine("Embeddable: \t{0}", book.AccessInfo.Embeddable);
             }
             Console.WriteLine("------------------------------------------------------------------------");
         }

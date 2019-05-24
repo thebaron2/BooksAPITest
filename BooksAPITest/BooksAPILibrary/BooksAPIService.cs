@@ -1,10 +1,4 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Books.v1;
-using Google.Apis.Books.v1.Data;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,13 +6,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BooksAPITest
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Books.v1;
+using Google.Apis.Books.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+
+namespace BooksAPILibrary
 {
-    class BookSearch
+    public class BooksAPIService
     {
-        // String that points to the config file
-        private readonly string configFile = "C:/Users/owena/git/BooksAPITest/BooksAPITest/BooksAPITest/config.txt";
-        // An empty BooksService object
         public static BooksService service = new BooksService(new BaseClientService.Initializer
         {
         });
@@ -33,8 +30,8 @@ namespace BooksAPITest
         /// </returns>
         public async Task CreateServiceObject(string filePath)
         {
-            
-            Dictionary<string, string> config = ReadConfigFile(configFile);
+
+            Dictionary<string, string> config = ReadConfigFile(filePath);
 
             // Create a credential object by calling the GoogleWebAuthorizationBroker
             // and put the client id and client secret in it.
@@ -77,50 +74,6 @@ namespace BooksAPITest
                 configDict.Add(words[0], words[1]);
             }
             return configDict;
-        }
-
-        /// <summary>
-        /// Finds a book (Volume) by its ISBN.
-        /// </summary>
-        /// <param name="isbn">A string representing the ISBN</param>
-        /// <returns>
-        /// A <c>Task</c> object of type <c>Volume</c>.
-        /// </returns>
-        public static async Task<Volume> SearchISBN(string isbn)
-        {
-            Console.WriteLine("Executing a book search request for ISBN: {0} ...", isbn);
-            // Call API
-            var result = await service.Volumes.List(isbn).ExecuteAsync();
-            // Check if result is not empty
-            if (result != null && result.Items != null)
-            {
-                // Converts the Volumes object to a Volume object.
-                var item = result.Items.FirstOrDefault();
-                return item;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Retrieves the first <c>Bookshelf</c> it finds.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>
-        /// A <c>Task</c> object of type <c>Bookshelf</c>.
-        /// </returns>
-        public static async Task<Bookshelf> ListMyFirstShelf(string userId)
-        {
-            Console.WriteLine("Listing the first bookshelf of user with ID {0}...", userId);
-            // Call API to retrieve bookshelves from Mylibrary.
-            var result = await service.Mylibrary.Bookshelves.List().ExecuteAsync();
-            // Check if type is not null.
-            if (result != null && result.Items != null)
-            {
-                // Convert the Bookshelves object to a Bookshelf object.
-                var item = result.Items.First();
-                return item;
-            }
-            return null;
         }
 
         /// <summary>
