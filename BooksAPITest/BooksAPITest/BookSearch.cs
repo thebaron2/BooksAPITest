@@ -122,7 +122,7 @@ namespace BooksAPITest
             }
             return null;
         }
-
+        /*
         /// <summary>
         /// Retrieves all <c>Bookshelves</c> in <c>Mylibrary</c>.
         /// </summary>
@@ -165,6 +165,6 @@ namespace BooksAPITest
                 return result;
             }
             return null;
-        }
+        }*/
     }
 }
